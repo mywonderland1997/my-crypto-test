@@ -1,0 +1,22 @@
+name: Daily Auto Commits
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # هر روز ساعت 09:00 UTC
+  workflow_dispatch:      # امکان اجرای دستی از GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Make a small random change
+        run: |
+          echo "$(date) - auto commit" >> daily_log.txt
+          git config user.name "Auto Commit Bot"
+          git config user.email "bot@example.com"
+          git add daily_log.txt
+          git commit -m "🤖 Daily commit - $(date)"
+          git push
